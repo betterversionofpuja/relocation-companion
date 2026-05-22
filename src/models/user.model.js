@@ -29,21 +29,7 @@ const userSchema = new Schema(
             type: String,
             required: [true, 'Password is required']
         },
-        salary: {
-            type: Number,
-        },
-        home_currency: {
-            type: String,
-            trim: true,
-        },
-        origin_country: {
-            type: String,
-            trim: true,
-        },
-        destination_country: {
-            type: String,
-            trim: true,
-        },
+        
         refreshToken: {
             type: String,
         }
