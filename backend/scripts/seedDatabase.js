@@ -1,84 +1,142 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import csvParser from "csv-parser";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import { City } from "../src/models/city.model.js";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const csvPath = path.resolve(__dirname, "data", "cities.csv");
 
-// --- Step 1: Slug Generator ---
-const generateSlug = (city, country) => {
-    return `${city}-${country}`
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")        // spaces → hyphens
-        .replace(/[^a-z0-9-]/g, ""); // remove anything that is not a letter, number, or hyphen
+dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
+
+const CSV_HEADERS = [
+  "Country",
+  "City",
+  "Year",
+  "Average_Monthly_Rent_USD",
+  "Food_Cost_Index",
+  "Transport_Cost_Index",
+  "Internet_Cost_USD",
+  "Average_Monthly_Salary_USD",
+  "Quality_of_Life_Index",
+  "Safety_Index",
+  "Healthcare_Index",
+  "Pollution_Index",
+];
+
+const toNumber = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
 };
 
-// --- Step 2: Read CSV and build documents array ---
-const loadCitiesFromCSV = () => {
-    return new Promise((resolve, reject) => {
-        const cityDocs = [];
+const cleanHeader = (header) => header.trim().replace(/^["']|["']$/g, "");
 
-        fs.createReadStream(path.resolve("scripts/data/cities.csv"))
-            .pipe(csvParser())
-            .on("data", (row) => {
+const createSlug = (row) =>
+  `${row["City"].toLowerCase()}-${row["Country"].toLowerCase()}-${row["Year"]}`
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
 
-                // Map CSV column names to your schema field names
-                // ⚠️ Replace the strings below with your actual CSV column headers
-                const doc = {
-                    name: row["City"],
-                    country: row["Country"],
-                    slug: generateSlug(row["City"], row["Country"]),
-                    rentMonthly: parseFloat(row["Average_Monthly_Rent_USD"]) || 0,
-                    mealCheap: parseFloat(row["Food_Cost_Index"]) || 0,
-                    groceriesMonthly: parseFloat(row["Transport_Cost_Index"]) || 0,
-                    transport: parseFloat(row["Internet_Cost_USD"]) || 0,
-                    qualityOfLife: parseFloat(row["Quality_of_Life_Index"]) || 0,
-                    safetyIndex: parseFloat(row["Safety_Index"]) || 0,
-                    healthcareIndex: parseFloat(row["Healthcare_Index"]) || 0,
-                    pollutionIndex: parseFloat(row["Pollution_Index"]) || 0,
-                };
+const parseCityRow = (row) => ({
+  Country: row["Country"]?.trim(),
+  City: row["City"]?.trim(),
+  Year: toNumber(row["Year"]),
+  Average_Monthly_Rent_USD: toNumber(row["Average_Monthly_Rent_USD"]),
+  Food_Cost_Index: toNumber(row["Food_Cost_Index"]),
+  Transport_Cost_Index: toNumber(row["Transport_Cost_Index"]),
+  Internet_Cost_USD: toNumber(row["Internet_Cost_USD"]),
+  Average_Monthly_Salary_USD: toNumber(row["Average_Monthly_Salary_USD"]),
+  Quality_of_Life_Index: toNumber(row["Quality_of_Life_Index"]),
+  Safety_Index: toNumber(row["Safety_Index"]),
+  Healthcare_Index: toNumber(row["Healthcare_Index"]),
+  Pollution_Index: toNumber(row["Pollution_Index"]),
+  slug: createSlug(row),
+});
 
-                cityDocs.push(doc);
-            })
-            .on("end", () => resolve(cityDocs))
-            .on("error", (err) => reject(err));
-    });
-};
+const loadCitiesFromCSV = () =>
+  new Promise((resolve, reject) => {
+    const cityDocs = [];
 
-// --- Step 3: Connect, wipe, and insert ---
-const seed = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("MongoDB connected");
+    fs.createReadStream(csvPath)
+      .pipe(csvParser({ mapHeaders: ({ header }) => cleanHeader(header) }))
+      .on("headers", (headers) => {
+        const missingHeaders = CSV_HEADERS.filter((header) => !headers.includes(header));
+        const extraHeaders = headers.filter((header) => !CSV_HEADERS.includes(header));
 
-        const cityDocs = await loadCitiesFromCSV();
-        console.log(`CSV read complete. ${cityDocs.length} cities found.`);
-
-        await City.deleteMany({});
-        console.log("Old data wiped.");
-
-        const result = await City.insertMany(cityDocs, { ordered: false }).catch((err) => {
-            if (err.code === 11000) {
-                console.warn(`Duplicate slugs skipped. Inserted: ${err.result.nInserted} cities.`);
-                return null;
-            }
-            throw err; // re-throw if it's a different error
-        });
-
-        if (result) {
-            console.log(`Successfully inserted ${cityDocs.length} cities.`);
+        if (missingHeaders.length > 0 || extraHeaders.length > 0) {
+          reject(
+            new Error(
+              `CSV headers do not match the expected 12-column Kaggle format. Missing: ${
+                missingHeaders.join(", ") || "none"
+              }. Extra: ${extraHeaders.join(", ") || "none"}.`
+            )
+          );
         }
+      })
+      .on("data", (row) => {
+        const cityName = row["City"] || row["city"];
+        const countryName = row["Country"] || row["country"];
+        if (!cityName || !countryName) return;
 
-    } catch (error) {
-        console.error("Seeding failed:", error.message);
-        process.exit(1);
-    } finally {
-        await mongoose.disconnect();
-        console.log("MongoDB disconnected. Seeder done.");
+        row["City"] = cityName;
+        row["Country"] = countryName;
+        cityDocs.push(parseCityRow(row));
+      })
+      .on("end", () => resolve(cityDocs))
+      .on("error", (err) => reject(err));
+  });
+
+const getInsertedCountFromError = (error) =>
+  error?.result?.insertedCount ??
+  error?.result?.nInserted ??
+  error?.insertedDocs?.length ??
+  0;
+
+const seed = async () => {
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI is not defined in the environment");
     }
+
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB connected");
+
+    await City.deleteMany({});
+    console.log("Old city documents deleted.");
+
+    const cityDocs = await loadCitiesFromCSV();
+    console.log(`CSV read complete. ${cityDocs.length} rows found.`);
+
+    try {
+      const insertedDocs = await City.insertMany(cityDocs, {
+        ordered: false,
+        throwOnValidationError: true,
+      });
+      console.log(
+        `Seed complete. Rows read: ${cityDocs.length}. Inserted: ${insertedDocs.length}. Duplicates skipped: 0.`
+      );
+    } catch (error) {
+      if (error.code === 11000 || error.name === "MongoBulkWriteError") {
+        const insertedCount = getInsertedCountFromError(error);
+        const duplicateCount = cityDocs.length - insertedCount;
+
+        console.warn(
+          `Seed complete with duplicate slugs skipped. Rows read: ${cityDocs.length}. Inserted: ${insertedCount}. Duplicates skipped: ${duplicateCount}.`
+        );
+      } else {
+        throw error;
+      }
+    }
+  } catch (error) {
+    console.error("Seeding failed:", error);
+    process.exitCode = 1;
+  } finally {
+    await mongoose.disconnect();
+    console.log("MongoDB disconnected. Seeder done.");
+  }
 };
 
 seed();
