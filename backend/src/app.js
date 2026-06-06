@@ -10,7 +10,10 @@ import cityRouter from "./routes/city.routes.js"
 const app = express()
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: [
+        "http://localhost:5173", 
+        "https://relocation-companion-six.vercel.app"
+    ],
     credentials: true
 }))
 
@@ -24,6 +27,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users", userRouter)
-app.use("/api/cities", cityRouter)
+app.use("/api/v1/cities", cityRouter)
 
 export { app }
