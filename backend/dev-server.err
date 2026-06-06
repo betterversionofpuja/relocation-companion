@@ -859,3 +859,91 @@ Error: Unauthorized request
     at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
     at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
     at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)
+Error: Unauthorized request
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/middlewares/auth.middleware.js:27:15
+    at file:///C:/Users/admi/Desktop/relocation-companion/backend/src/utils/asyncHandler.js:3:25
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:295:15
+    at processParams (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:582:12)
+    at next (C:\Users\admi\Desktop\relocation-companion\backend\node_modules\router\index.js:291:5)

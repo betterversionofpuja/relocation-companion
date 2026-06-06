@@ -11,8 +11,8 @@ const app = express()
 
 app.use(cors({
     origin: [
-        "http://localhost:5173", 
-        "https://relocation-companion-six.vercel.app"
+        "http://localhost:5173",
+        "https://relocation-companion-rouge.vercel.app"
     ],
     credentials: true
 }))
@@ -23,7 +23,7 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 app.get("/", (req, res) => {
-  res.send("Backend + DB working 🚀");
+    res.send("Backend + DB working 🚀");
 });
 
 app.use("/api/v1/users", userRouter)
