@@ -11,9 +11,28 @@ const cookieOptions = {
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
 }
 
-const generateAccessAndRefereshTokens = async(userId) =>{
+const requireAuthEnv = () => {
+    const requiredKeys = [
+        "ACCESS_TOKEN_SECRET",
+        "ACCESS_TOKEN_EXPIRY",
+        "REFRESH_TOKEN_SECRET",
+        "REFRESH_TOKEN_EXPIRY",
+    ]
+    const missingKeys = requiredKeys.filter((key) => !process.env[key])
+
+    if (missingKeys.length) {
+        throw new ApiError(500, `Missing auth environment variables: ${missingKeys.join(", ")}`)
+    }
+}
+
+const generateAccessAndRefreshTokens = async(userId) =>{
     try {
+        requireAuthEnv()
         const user = await User.findById(userId)
+        if (!user) {
+            throw new ApiError(404, "User does not exist")
+        }
+
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
 
@@ -24,7 +43,8 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 
 
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating referesh and access token")
+        if (error instanceof ApiError) throw error
+        throw new ApiError(500, "Something went wrong while generating refresh and access token")
     }
 }
 
@@ -104,7 +124,7 @@ const loginUser = asyncHandler(async (req, res) =>{
     throw new ApiError(401, "Invalid user credentials")
     }
 
-   const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
+   const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
@@ -168,7 +188,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             
         }
     
-        const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id)
+        const {accessToken, refreshToken: newRefreshToken} = await generateAccessAndRefreshTokens(user._id)
     
         return res
         .status(200)

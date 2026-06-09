@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes.js";
 import cityRouter from "./routes/city.routes.js";
 import savedComparisonRouter from "./routes/savedComparison.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -43,5 +44,6 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/cities", cityRouter);
 app.use("/api/v1/saved-comparisons", savedComparisonRouter);
 app.use("/api/saved-comparisons", savedComparisonRouter);
+app.use(errorHandler);
 
 export { app };

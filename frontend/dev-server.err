@@ -36,3 +36,53 @@
     at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
     at async fetchCityList (http://localhost:5173/src/api/cityApi.js:4:19)
     at async loadCities (http://localhost:5173/src/hooks/useCities.js:10:18)
+[2m12:37:36 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:36 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:38 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:41 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:53 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:53 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:55 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:37:58 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:40:44 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)
+[2m12:40:44 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mAxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2134:16)
+    at Axios$1.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=ff3942f8:2854:37)
+    at async fetchCityList (http://localhost:5173/src/api/cityApi.js?t=1780988690472:4:19)
+    at async loadCities (http://localhost:5173/src/hooks/useCities.js?t=1780988690472:10:18)

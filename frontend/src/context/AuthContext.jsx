@@ -7,6 +7,7 @@ import {
 } from "../services/authService";
 
 const extractUser = (payload) => payload?.data?.user || payload?.data || null;
+const authSessionKey = "relocation-companion-authenticated";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -19,9 +20,11 @@ export const AuthProvider = ({ children }) => {
       const payload = await getCurrentUser();
       const nextUser = extractUser(payload);
       setUser(nextUser);
+      if (nextUser) localStorage.setItem(authSessionKey, "true");
       return nextUser;
     } catch {
       setUser(null);
+      localStorage.removeItem(authSessionKey);
       return null;
     } finally {
       setLoading(false);
@@ -35,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       const payload = await loginUserRequest(credentials);
       const nextUser = extractUser(payload);
       setUser(nextUser);
+      localStorage.setItem(authSessionKey, "true");
       return payload;
     } finally {
       setLoading(false);
@@ -48,12 +52,19 @@ export const AuthProvider = ({ children }) => {
       await logoutUserRequest();
     } finally {
       setUser(null);
+      localStorage.removeItem(authSessionKey);
       setLoading(false);
       setAuthReady(true);
     }
   }, []);
 
   useEffect(() => {
+    if (!localStorage.getItem(authSessionKey)) {
+      setLoading(false);
+      setAuthReady(true);
+      return;
+    }
+
     Promise.resolve().then(fetchCurrentUser);
   }, [fetchCurrentUser]);
 
