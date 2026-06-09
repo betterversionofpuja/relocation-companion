@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import AuthButton from "../components/auth/AuthButton";
-import AuthCard from "../components/auth/AuthCard";
-import AuthInput from "../components/auth/AuthInput";
 import PageTransition from "../components/common/PageTransition";
 import useAuth from "../hooks/useAuth";
 import { registerUser } from "../services/authService";
@@ -78,61 +75,132 @@ const Register = () => {
   };
 
   return (
-    <PageTransition className="auth-page">
-      <AuthCard
-        eyebrow="Create Workspace"
-        title="Create your account"
-        subtitle="Start building a trusted relocation profile for smarter city decisions."
-      >
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <AuthInput
-            id="fullName"
-            label="Full Name"
-            type="text"
-            autoComplete="name"
-            value={values.fullName}
-            onChange={updateValue("fullName")}
-            error={errors.fullName}
-          />
-          <AuthInput
-            id="username"
-            label="Username"
-            type="text"
-            autoComplete="username"
-            value={values.username}
-            onChange={updateValue("username")}
-            error={errors.username}
-          />
-          <AuthInput
-            id="email"
-            label="Email"
-            type="email"
-            autoComplete="email"
-            value={values.email}
-            onChange={updateValue("email")}
-            error={errors.email}
-          />
-          <AuthInput
-            id="password"
-            label="Password"
-            type="password"
-            autoComplete="new-password"
-            value={values.password}
-            onChange={updateValue("password")}
-            error={errors.password}
-          />
+    <PageTransition className="grid min-h-[calc(100vh-3.5rem)] place-items-center px-5 py-10">
+      <section className="w-full max-w-md rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.32)] sm:p-8">
+        <div className="text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-accent)]">
+            Create workspace
+          </p>
+          <h1 className="font-display mt-3 text-2xl font-bold leading-tight text-[var(--text-primary)]">
+            Create your account
+          </h1>
+        </div>
+
+        <form className="mt-7 grid gap-5" onSubmit={handleSubmit} noValidate>
+          <div className="grid gap-2">
+            <label
+              className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-secondary)]"
+              htmlFor="fullName"
+            >
+              Full Name
+            </label>
+            <input
+              id="fullName"
+              className="h-12 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 font-semibold text-[var(--text-primary)] outline-none transition focus:border-[var(--border-focus)] focus:ring-2 focus:ring-[var(--border-focus)]"
+              type="text"
+              autoComplete="name"
+              value={values.fullName}
+              onChange={updateValue("fullName")}
+              aria-invalid={Boolean(errors.fullName)}
+              aria-describedby={errors.fullName ? "fullName-error" : undefined}
+            />
+            {errors.fullName && (
+              <p id="fullName-error" className="m-0 text-sm font-bold text-[var(--loss-primary)]">
+                {errors.fullName}
+              </p>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <label
+              className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-secondary)]"
+              htmlFor="username"
+            >
+              Username
+            </label>
+            <input
+              id="username"
+              className="h-12 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 font-semibold text-[var(--text-primary)] outline-none transition focus:border-[var(--border-focus)] focus:ring-2 focus:ring-[var(--border-focus)]"
+              type="text"
+              autoComplete="username"
+              value={values.username}
+              onChange={updateValue("username")}
+              aria-invalid={Boolean(errors.username)}
+              aria-describedby={errors.username ? "username-error" : undefined}
+            />
+            {errors.username && (
+              <p id="username-error" className="m-0 text-sm font-bold text-[var(--loss-primary)]">
+                {errors.username}
+              </p>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <label
+              className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-secondary)]"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              className="h-12 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 font-semibold text-[var(--text-primary)] outline-none transition focus:border-[var(--border-focus)] focus:ring-2 focus:ring-[var(--border-focus)]"
+              type="email"
+              autoComplete="email"
+              value={values.email}
+              onChange={updateValue("email")}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "email-error" : undefined}
+            />
+            {errors.email && (
+              <p id="email-error" className="m-0 text-sm font-bold text-[var(--loss-primary)]">
+                {errors.email}
+              </p>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <label
+              className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--text-secondary)]"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              className="h-12 w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 font-semibold text-[var(--text-primary)] outline-none transition focus:border-[var(--border-focus)] focus:ring-2 focus:ring-[var(--border-focus)]"
+              type="password"
+              autoComplete="new-password"
+              value={values.password}
+              onChange={updateValue("password")}
+              aria-invalid={Boolean(errors.password)}
+              aria-describedby={errors.password ? "password-error" : undefined}
+            />
+            {errors.password && (
+              <p id="password-error" className="m-0 text-sm font-bold text-[var(--loss-primary)]">
+                {errors.password}
+              </p>
+            )}
+          </div>
 
           {status.message && <p className={`form-status ${status.type}`}>{status.message}</p>}
 
-          <AuthButton type="submit" loading={submitting}>
-            Create Account
-          </AuthButton>
+          <button
+            className="primary-button h-12 w-full px-4 text-base shadow-[0_18px_48px_rgba(14,165,233,0.24)] disabled:cursor-wait"
+            type="submit"
+            disabled={submitting}
+          >
+            {submitting ? "Please wait..." : "Create Account"}
+          </button>
         </form>
 
-        <p className="auth-switch">
-          Already have an account? <Link to="/login">Log In</Link>
+        <p className="mt-6 text-center text-sm text-[var(--text-secondary)]">
+          Already have an account?{" "}
+          <Link className="auth-link" to="/login">
+            Log In
+          </Link>
         </p>
-      </AuthCard>
+      </section>
     </PageTransition>
   );
 };

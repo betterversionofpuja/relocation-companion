@@ -10,6 +10,7 @@ import {
 } from "../api/savedComparisonApi";
 import CitySelector from "../components/CitySelector";
 import ComparisonTable from "../components/ComparisonTable";
+import Footer from "../components/Footer";
 import useAuth from "../hooks/useAuth";
 
 const cityDisplayName = (city) => (city ? `${city.name}, ${city.country}` : "");
@@ -243,9 +244,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <footer className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-center text-xs font-semibold text-slate-500">
-        Data-driven relocation intelligence // {new Date().getFullYear()}
-      </footer>
+      <Footer />
     </>
   );
 };
