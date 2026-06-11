@@ -360,8 +360,6 @@ The goal is to provide a single platform that helps users confidently navigate e
 
 ---
 
-## 👩‍💻 Developer
-
 ## 👩‍💻 About the Developer
 
 **Puja Kumari**  
