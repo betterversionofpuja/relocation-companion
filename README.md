@@ -18,7 +18,7 @@ Relocation Companion centralizes this process by providing structured city compa
 
 ### Landing Page
 
-<!-- ![Relocation Companion Landing Page](./screenshots/landing-page.png) -->
+![Relocation Companion Landing Page](./screenshots/landing-page.png)
 
 *Compare affordability, quality of life, healthcare, safety, and environmental conditions before making a relocation decision.*
 
