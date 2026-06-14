@@ -23,6 +23,7 @@ const HomePage = () => {
   const { authReady, isAuthenticated, user } = useAuth();
   const [city1, setCity1] = useState("");
   const [city2, setCity2] = useState("");
+  const [weights, setWeights] = useState({ economy: 33, lifestyle: 33, environment: 34 });
   const [comparisonData, setComparisonData] = useState(null);
   const [comparing, setComparing] = useState(false);
   const [compareError, setCompareError] = useState(null);
@@ -228,6 +229,8 @@ const HomePage = () => {
             loading={comparing}
             onSaveToggle={handleSaveToggle}
             saveState={saveState}
+            weights={weights}
+            onWeightsChange={setWeights}
           />
         )}
 
@@ -240,7 +243,7 @@ const HomePage = () => {
         )}
 
         <div id="results">
-          <ComparisonTable data={comparisonData} />
+          <ComparisonTable data={comparisonData} weights={weights} />
         </div>
       </section>
 

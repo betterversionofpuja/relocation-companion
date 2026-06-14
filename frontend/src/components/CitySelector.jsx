@@ -56,7 +56,43 @@ const CitySelector = ({
   loading,
   onSaveToggle,
   saveState,
+  weights = { economy: 33, lifestyle: 33, environment: 34 },
+  onWeightsChange,
 }) => {
+  const handleWeightChange = (changedKey, newValue) => {
+    newValue = Math.max(0, Math.min(100, Number(newValue)));
+    const keys = ["economy", "lifestyle", "environment"];
+    const otherKeys = keys.filter((k) => k !== changedKey);
+
+    const currentValue = weights[changedKey] ?? 0;
+    const diff = newValue - currentValue;
+
+    let newWeights = { ...weights, [changedKey]: newValue };
+
+    const sumOther = otherKeys.reduce((s, k) => s + (weights[k] ?? 0), 0);
+    if (sumOther > 0) {
+      otherKeys.forEach((k) => {
+        const share = (weights[k] ?? 0) / sumOther;
+        newWeights[k] = Math.max(0, Math.round((weights[k] ?? 0) - diff * share));
+      });
+    } else {
+      const share = diff / otherKeys.length;
+      otherKeys.forEach((k) => {
+        newWeights[k] = Math.max(0, Math.round((weights[k] ?? 0) - share));
+      });
+    }
+
+    const currentSum = Object.values(newWeights).reduce((a, b) => a + b, 0);
+    if (currentSum !== 100) {
+      const error = 100 - currentSum;
+      const adjustKey = otherKeys.find((k) => newWeights[k] + error >= 0) || otherKeys[0];
+      newWeights[adjustKey] = Math.max(0, newWeights[adjustKey] + error);
+    }
+
+    if (onWeightsChange) {
+      onWeightsChange(newWeights);
+    }
+  };
   const canCompare = city1 && city2 && city1 !== city2 && !loading;
   const cityCount = useMemo(() => cities.length.toLocaleString("en-US"), [cities.length]);
 
@@ -117,6 +153,77 @@ const CitySelector = ({
             placeholder="Select destination"
             onChange={onCity2Change}
           />
+        </div>
+
+        {/* Personal Priorities Panel */}
+        <div className="mt-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/40 p-5 backdrop-blur-md">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h4 className="font-display text-sm font-bold text-white">Personal Priorities</h4>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                Customize weights to calculate your personal recommendation (must sum to 100%)
+              </p>
+            </div>
+            <span className="section-badge self-start sm:self-auto !border-emerald-500/20 !bg-emerald-500/10 !text-emerald-400">
+              Custom scoring active
+            </span>
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* Economy / Finance Slider */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className="text-[var(--text-secondary)] flex items-center gap-1.5">
+                  💰 Finance (Economy)
+                </span>
+                <span className="text-white font-bold">{weights.economy}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={weights.economy}
+                onChange={(e) => handleWeightChange("economy", e.target.value)}
+                className="w-full accent-[var(--text-accent)] cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
+              />
+            </div>
+
+            {/* Lifestyle / Safety Slider */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className="text-[var(--text-secondary)] flex items-center gap-1.5">
+                  🩺 Lifestyle (Safety & Health)
+                </span>
+                <span className="text-white font-bold">{weights.lifestyle}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={weights.lifestyle}
+                onChange={(e) => handleWeightChange("lifestyle", e.target.value)}
+                className="w-full accent-[var(--text-accent)] cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
+              />
+            </div>
+
+            {/* Environment Slider */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className="text-[var(--text-secondary)] flex items-center gap-1.5">
+                  🍃 Air Quality (Environment)
+                </span>
+                <span className="text-white font-bold">{weights.environment}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={weights.environment}
+                onChange={(e) => handleWeightChange("environment", e.target.value)}
+                className="w-full accent-[var(--text-accent)] cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="mt-5 flex flex-col gap-4 border-t border-[var(--border-subtle)] pt-5 lg:flex-row lg:items-start lg:justify-between">

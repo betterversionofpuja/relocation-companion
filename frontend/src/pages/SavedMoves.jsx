@@ -184,6 +184,7 @@ const SavedMoves = () => {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState("");
   const [error, setError] = useState("");
+  const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
     let ignore = false;
@@ -245,10 +246,45 @@ const SavedMoves = () => {
   return (
     <PageTransition className="saved-page">
       <section className="saved-moves content-shell">
-        <div className="section-header">
-          <p className="eyebrow">Saved Comparison Dashboard</p>
-          <h2>Saved Moves</h2>
-          <p>Review your saved city pairs and reopen any full comparison in the engine.</p>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 border-b border-[var(--border-subtle)] pb-5">
+          <div className="section-header">
+            <p className="eyebrow">Saved Comparison Dashboard</p>
+            <h2>Saved Moves</h2>
+            <p>Review your saved city pairs and reopen any full comparison in the engine.</p>
+          </div>
+          
+          <div className="flex items-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/50 p-1 self-start sm:self-auto backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all border-0 cursor-pointer ${
+                viewMode === "grid"
+                  ? "bg-slate-800 text-white shadow"
+                  : "text-[var(--text-secondary)] hover:text-white"
+              }`}
+              title="Show as Grid"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+              Grid
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("table")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all border-0 cursor-pointer ${
+                viewMode === "table"
+                  ? "bg-slate-800 text-white shadow"
+                  : "text-[var(--text-secondary)] hover:text-white"
+              }`}
+              title="Show as Table"
+            >
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Table
+            </button>
+          </div>
         </div>
 
         <div className="mt-8">
@@ -262,7 +298,7 @@ const SavedMoves = () => {
                 No saved moves yet. Start comparing cities to save your progress!
               </p>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
               {comparisons.map((item) => (
                 <SavedMoveCard
@@ -273,6 +309,106 @@ const SavedMoves = () => {
                   onDelete={handleDelete}
                 />
               ))}
+            </div>
+          ) : (
+            <div className="overflow-x-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/30 backdrop-blur-md shadow-2xl">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-[var(--border-subtle)] text-[10px] uppercase font-bold tracking-widest text-[var(--text-secondary)] bg-slate-900/40">
+                    <th className="py-4 px-5">Move (Origin vs Destination)</th>
+                    <th className="py-4 px-5">Winner</th>
+                    <th className="py-4 px-5">Confidence</th>
+                    <th className="py-4 px-5">Scores (Orig vs Dest)</th>
+                    <th className="py-4 px-5 text-center">Finance Adv.</th>
+                    <th className="py-4 px-5 text-center">Lifestyle Adv.</th>
+                    <th className="py-4 px-5 text-center">Environment Adv.</th>
+                    <th className="py-4 px-5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-xs font-semibold text-slate-300">
+                  {comparisons.map((item) => {
+                    const title = `${item.analysis.cityOne.name} vs ${item.analysis.cityTwo.name}`;
+                    const scoreOne = item.decoded.weightedScoreOne?.toFixed(1) ?? "N/A";
+                    const scoreTwo = item.decoded.weightedScoreTwo?.toFixed(1) ?? "N/A";
+
+                    return (
+                      <tr
+                        key={item.saved._id}
+                        className="transition-colors duration-150 hover:bg-white/[0.015]"
+                      >
+                        <td className="py-4 px-5 font-bold text-white max-w-[12rem] truncate">
+                          {title}
+                        </td>
+                        <td className="py-4 px-5">
+                          <span className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-400">
+                            {item.winner.name}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 tabular font-bold text-blue-400">
+                          {item.decoded.verdict.confidenceScore}%
+                        </td>
+                        <td className="py-4 px-5 tabular text-[var(--text-secondary)]">
+                          <span className="text-white">{scoreOne}</span> vs{" "}
+                          <span className="text-white">{scoreTwo}</span>
+                        </td>
+                        <td className="py-4 px-5 text-center">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                            item.decoded.verdict.financialAdvantage === "Balanced"
+                              ? "bg-slate-800 text-slate-400"
+                              : item.decoded.verdict.financialAdvantage === item.analysis.cityOne.name.toUpperCase()
+                                ? "bg-sky-500/10 text-sky-400 border border-sky-500/15"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
+                          }`}>
+                            {item.decoded.verdict.financialAdvantage === "Balanced" ? "Tie" : item.decoded.verdict.financialAdvantage}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 text-center">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                            item.decoded.verdict.lifestyleAdvantage === "Balanced"
+                              ? "bg-slate-800 text-slate-400"
+                              : item.decoded.verdict.lifestyleAdvantage === item.analysis.cityOne.name.toUpperCase()
+                                ? "bg-sky-500/10 text-sky-400 border border-sky-500/15"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
+                          }`}>
+                            {item.decoded.verdict.lifestyleAdvantage === "Balanced" ? "Tie" : item.decoded.verdict.lifestyleAdvantage}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 text-center">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                            item.decoded.verdict.environmentalAdvantage === "Balanced"
+                              ? "bg-slate-800 text-slate-400"
+                              : item.decoded.verdict.environmentalAdvantage === item.analysis.cityOne.name.toUpperCase()
+                                ? "bg-sky-500/10 text-sky-400 border border-sky-500/15"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
+                          }`}>
+                            {item.decoded.verdict.environmentalAdvantage === "Balanced" ? "Tie" : item.decoded.verdict.environmentalAdvantage}
+                          </span>
+                        </td>
+                        <td className="py-4 px-5 text-right">
+                          <div className="flex items-center justify-end gap-3">
+                            <button
+                              type="button"
+                              onClick={() => handleViewAnalysis(item.saved)}
+                              className="text-xs font-bold text-blue-400 hover:text-blue-300 hover:underline bg-transparent border-0 cursor-pointer focus:outline-none"
+                            >
+                              Open
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(item.saved._id)}
+                              disabled={deletingId === item.saved._id}
+                              className="text-xs font-bold text-red-400 hover:text-red-300 disabled:opacity-40 bg-transparent border-0 cursor-pointer focus:outline-none"
+                              aria-label={`Delete ${title}`}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

@@ -48,7 +48,7 @@ const winnerName = (winner, cityOne, cityTwo) => {
   return "Balanced";
 };
 
-export const decodeComparison = ({ cityOne, cityTwo, diff }) => {
+export const decodeComparison = ({ cityOne, cityTwo, diff }, weights = { economy: 33, lifestyle: 33, environment: 34 }) => {
   const cityOneShort = cityLabel(cityOne);
   const cityTwoShort = cityLabel(cityTwo);
   const cityOneSalary = getSalaryValue(cityOne);
@@ -204,10 +204,54 @@ export const decodeComparison = ({ cityOne, cityTwo, diff }) => {
     Environment: rows.filter((row) => row.group === "Environment").length,
   };
 
+  // --- Start custom scoring and normalization ---
+  const calculateDimensionScores = (city) => {
+    if (!city) return { economy: 0, lifestyle: 0, environment: 0 };
+    const rent = Number(city.rentMonthly ?? city.Average_Monthly_Rent_USD ?? 0);
+    const food = Number(city.foodCostIndex ?? city.mealCheap ?? city.Food_Cost_Index ?? 0);
+    const transport = Number(city.groceriesMonthly ?? city.transportCostIndex ?? city.Transport_Cost_Index ?? 0);
+    const internet = Number(city.transport ?? city.internetCostUsd ?? city.Internet_Cost_USD ?? 0);
+    const salary = Number(city.averageMonthlySalary ?? city.Average_Monthly_Salary_USD ?? 0);
+    const qol = Number(city.qualityOfLife ?? city.Quality_of_Life_Index ?? 0);
+    const safety = Number(city.safetyIndex ?? city.Safety_Index ?? 0);
+    const healthcare = Number(city.healthcareIndex ?? city.Healthcare_Index ?? 0);
+    const pollution = Number(city.pollutionIndex ?? city.Pollution_Index ?? 0);
+
+    const rentScore = Math.max(0, 100 - (rent / 3000) * 100);
+    const foodScore = Math.max(0, 100 - food);
+    const transportScore = Math.max(0, 100 - transport);
+    const internetScore = Math.max(0, 100 - (internet / 150) * 100);
+    const salaryScore = Math.min(100, (salary / 6000) * 100);
+
+    const economyScore = (rentScore + foodScore + transportScore + internetScore + salaryScore) / 5;
+
+    const qolScore = Math.min(100, (qol / 200) * 100);
+    const safetyScore = safety;
+    const healthcareScore = healthcare;
+
+    const lifestyleScore = (qolScore + safetyScore + healthcareScore) / 3;
+
+    const environmentScore = Math.max(0, 100 - pollution);
+
+    return {
+      economy: economyScore,
+      lifestyle: lifestyleScore,
+      environment: environmentScore,
+    };
+  };
+
+  const scoresOne = calculateDimensionScores(cityOne);
+  const scoresTwo = calculateDimensionScores(cityTwo);
+
+  const weightedScoreOne = (scoresOne.economy * weights.economy + scoresOne.lifestyle * weights.lifestyle + scoresOne.environment * weights.environment) / 100;
+  const weightedScoreTwo = (scoresTwo.economy * weights.economy + scoresTwo.lifestyle * weights.lifestyle + scoresTwo.environment * weights.environment) / 100;
+
+  const scoreDiff = Math.abs(weightedScoreOne - weightedScoreTwo);
+
   const recommendedWinner =
-    wins.cityOne.total === wins.cityTwo.total
+    scoreDiff < 1.5
       ? "tie"
-      : wins.cityOne.total > wins.cityTwo.total
+      : weightedScoreOne > weightedScoreTwo
         ? "cityOne"
         : "cityTwo";
 
@@ -219,17 +263,37 @@ export const decodeComparison = ({ cityOne, cityTwo, diff }) => {
   const confidenceScore =
     recommendedWinner === "tie"
       ? 68
-      : Math.round(62 + (Math.abs(wins.cityOne.total - wins.cityTwo.total) / rows.length) * 34);
+      : Math.min(99, Math.round(62 + (scoreDiff / 30) * 36));
 
-  const categoryWinner = (group) => {
-    if (wins.cityOne[group] === wins.cityTwo[group]) return "Balanced";
-    return wins.cityOne[group] > wins.cityTwo[group] ? cityOneShort : cityTwoShort;
+  const getCategoryWinner = (score1, score2) => {
+    if (Math.abs(score1 - score2) < 1.0) return "Balanced";
+    return score1 > score2 ? cityOneShort : cityTwoShort;
+  };
+
+  const leadAdvantageName = () => {
+    if (recommendedWinner === "tie") return "balanced";
+    const wKey = recommendedWinner;
+    const s1 = scoresOne;
+    const s2 = scoresTwo;
+
+    const econLead = s1.economy - s2.economy;
+    const lifeLead = s1.lifestyle - s2.lifestyle;
+    const envLead = s1.environment - s2.environment;
+
+    const leads = [
+      { name: "financial", val: wKey === "cityOne" ? econLead : -econLead },
+      { name: "lifestyle", val: wKey === "cityOne" ? lifeLead : -lifeLead },
+      { name: "environmental", val: wKey === "cityOne" ? envLead : -envLead },
+    ];
+
+    leads.sort((a, b) => b.val - a.val);
+    return leads[0].name;
   };
 
   const summary =
     recommendedWinner === "tie"
-      ? "The move is balanced across the measured signals. The final decision should lean on personal priorities."
-      : `${winnerName(recommendedWinner, cityOne, cityTwo)} leads the overall relocation profile, with the strongest edge in ${categoryWinner("Economy") === winnerName(recommendedWinner, cityOne, cityTwo) ? "financial" : "quality"} signals.`;
+      ? "The move is closely balanced based on your custom weight priorities. Consider adjusting your priorities or weightings to see how it shifts."
+      : `${winnerName(recommendedWinner, cityOne, cityTwo)} leads your custom relocation profile with an overall score of ${recommendedWinner === "cityOne" ? weightedScoreOne.toFixed(1) : weightedScoreTwo.toFixed(1)} vs ${recommendedWinner === "cityOne" ? weightedScoreTwo.toFixed(1) : weightedScoreOne.toFixed(1)}, showing the strongest edge in ${leadAdvantageName()} factors.`;
 
   return {
     cityOneName: fullCityLabel(cityOne),
@@ -239,10 +303,12 @@ export const decodeComparison = ({ cityOne, cityTwo, diff }) => {
     categoryTotals,
     summary,
     recommendedWinner,
+    weightedScoreOne,
+    weightedScoreTwo,
     verdict: {
-      financialAdvantage: categoryWinner("Economy"),
-      lifestyleAdvantage: categoryWinner("Lifestyle"),
-      environmentalAdvantage: categoryWinner("Environment"),
+      financialAdvantage: getCategoryWinner(scoresOne.economy, scoresTwo.economy),
+      lifestyleAdvantage: getCategoryWinner(scoresOne.lifestyle, scoresTwo.lifestyle),
+      environmentalAdvantage: getCategoryWinner(scoresOne.environment, scoresTwo.environment),
       recommendedMove,
       confidenceScore,
     },
