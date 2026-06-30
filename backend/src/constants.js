@@ -1,1 +1,1 @@
-export const DB_NAME = "Relocation_Companion";
+export const DB_NAME = "relocation_comparison_pro";
