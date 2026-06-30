@@ -1,1 +1,1 @@
-export const DB_NAME = "mern_backend_auth_starter";
+export const DB_NAME = "Relocation_Companion";
