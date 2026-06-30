@@ -33,11 +33,13 @@ function LoginPage() {
     setLoading(true);
     setError("");
 
-    const { user } = await loginUser(formData);
+    const response = await loginUser(formData);
 
-    setUser(user);
+localStorage.setItem("accessToken", response.accessToken);
 
-    navigate("/");
+setUser(response.user);
+
+navigate("/");
   } catch (error) {
     setError(
       error.response?.data?.message ||
