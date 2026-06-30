@@ -56,6 +56,67 @@ const saveComparison = asyncHandler(async (req, res) => {
     );
 });
 
+const toggleSavedComparison = asyncHandler(async (req, res) => {
+
+    const { cityOneSlug, cityTwoSlug } = req.body;
+
+    if (!cityOneSlug || !cityTwoSlug) {
+        throw new ApiError(400, "Both city slugs are required");
+    }
+
+    const existingComparison = await SavedComparison.findOne({
+        userId: req.user._id,
+        cityOneSlug,
+        cityTwoSlug
+    });
+
+    if (existingComparison) {
+
+        await SavedComparison.findByIdAndDelete(
+            existingComparison._id
+        );
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                {
+                    saved: false
+                },
+                "Comparison removed successfully"
+            )
+        );
+    }
+
+    const cityOne = await City.findOne({
+        slug: cityOneSlug
+    });
+
+    const cityTwo = await City.findOne({
+        slug: cityTwoSlug
+    });
+
+    const comparison = await SavedComparison.create({
+        userId: req.user._id,
+
+        cityOneSlug,
+        cityTwoSlug,
+
+        cityOneName: `${cityOne.City}, ${cityOne.Country}`,
+        cityTwoName: `${cityTwo.City}, ${cityTwo.Country}`
+    });
+
+    return res.status(201).json(
+        new ApiResponse(
+            201,
+            {
+                saved: true,
+                comparison
+            },
+            "Comparison saved successfully"
+        )
+    );
+});
+
 const getSavedComparisons = asyncHandler(async (req, res) => {
 
     const comparisons = await SavedComparison.find({ userId: req.user._id })
@@ -98,6 +159,7 @@ const deleteSavedComparison = asyncHandler(async (req, res) => {
 
 export {
     saveComparison,
+    toggleSavedComparison,
     getSavedComparisons,
     deleteSavedComparison
 };

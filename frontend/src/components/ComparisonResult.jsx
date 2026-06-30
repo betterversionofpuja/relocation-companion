@@ -16,9 +16,8 @@ function ComparisonResult({ comparison }) {
     <section className="max-w-5xl mx-auto px-6 mb-24">
 
       <SystemVerdict comparison={comparison} />
-      <div className="w-full flex justify-center">
-        <SaveComparisonCTA />
-      </div>
+      <SaveComparisonCTA comparison={comparison} />
+      
       <div className="mt-16">
         <h2 className="text-3xl font-bold text-white mb-8">
           Decision Drivers

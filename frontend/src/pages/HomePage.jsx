@@ -10,8 +10,13 @@ import CompareButton from "../components/CompareButton";
 
 function HomePage() {
   const [cities, setCities] = useState([]);
-  const [cityOne, setCityOne] = useState("");
-  const [cityTwo, setCityTwo] = useState("");
+  const [cityOne, setCityOne] = useState(
+  localStorage.getItem("cityOne") || ""
+);
+
+const [cityTwo, setCityTwo] = useState(
+  localStorage.getItem("cityTwo") || ""
+);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -31,6 +36,14 @@ function HomePage() {
     loadCities();
   }, []);
 
+  useEffect(() => {
+  localStorage.setItem("cityOne", cityOne);
+}, [cityOne]);
+
+useEffect(() => {
+  localStorage.setItem("cityTwo", cityTwo);
+}, [cityTwo]);
+
   const handleCompare = async () => {
     if (!cityOne || !cityTwo) {
       alert("Please select both cities");
@@ -49,10 +62,20 @@ function HomePage() {
       const data = await fetchComparison(cityOne, cityTwo);
 
       navigate("/compare", {
-        state: {
-          comparison: data,
-        },
-      });
+  state: {
+    comparison: {
+      ...data,
+      cityOne: {
+        ...data.cityOne,
+        slug: cityOne,
+      },
+      cityTwo: {
+        ...data.cityTwo,
+        slug: cityTwo,
+      },
+    },
+  },
+});
     } catch (error) {
       setError("Something went wrong");
       console.error(error);
