@@ -1,7 +1,11 @@
 # 🌍 Relocation Companion
 
 <p align="center">
-  <img src="assets/homepage.png" alt="Relocation Companion Homepage" width="100%">
+  <img
+    src="https://raw.githubusercontent.com/betterversionofpuja/relocation-companion/main/assets/homepage.png"
+    alt="Relocation Companion Homepage"
+    width="100%"
+  />
 </p>
 
 A MERN app to compare cities side-by-side across affordability, cost of living, quality of life, healthcare, safety, and environment, helping you make confident, data-driven relocation decisions.
