@@ -42,11 +42,14 @@ function RegisterPage() {
 
       navigate("/login");
     } catch (error) {
-      setError(
-        error.response?.data?.message ||
-        error.message ||
-        "Registration failed."
-      );
+      if (error.response?.status === 409) {
+        setError("An account with this email or username already exists.");
+      } else {
+        setError(
+          error.response?.data?.message ||
+          "Registration failed. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }

@@ -1,53 +1,55 @@
 {
-  "name": "mern-backend-auth-starter",
+  "name": "relocation-companion-api",
   "version": "1.0.0",
-  "description": "A production-ready MERN backend starter with authentication, authorization, MongoDB integration, and a scalable best-practice folder structure.",
+  "description": "REST API for Relocation Companion — a full-stack MERN application that helps users compare cities worldwide based on cost of living, quality of life, safety, healthcare, and other relocation factors.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
   "keywords": [
+    "relocation",
+    "city-comparison",
+    "cost-of-living",
+    "quality-of-life",
     "mern",
     "mongodb",
     "express",
     "nodejs",
     "jwt",
     "authentication",
-    "authorization",
-    "refresh-token",
-    "backend",
-    "api",
-    "boilerplate",
-    "starter-template",
-    "mongoose",
     "rest-api",
-    "security"
+    "react",
+    "travel",
+    "relocation-planning"
   ],
-  "homepage": "https://github.com/betterversionofpuja/mern-backend-auth-starter#readme",
-  "bugs": {
-    "url": "https://github.com/betterversionofpuja/mern-backend-auth-starter/issues"
-  },
+  "author": "Puja Kumari",
+  "license": "UNLICENSED",
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/betterversionofpuja/mern-backend-auth-starter.git"
+    "url": "https://github.com/betterversionofpuja/relocation-companion.git"
   },
-  "license": "MIT",
-  "author": "Puja Kumari",
-  "type": "module",
-  "main": "src/index.js",
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "format": "prettier --write ."
+  "bugs": {
+    "url": "https://github.com/betterversionofpuja/relocation-companion/issues"
+  },
+  "homepage": "https://relocation-companion-pro.vercel.app/",
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.6",
-    "csv-parser": "^3.2.1",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.7.0"
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.3",
+    "multer": "^2.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14",
-    "prettier": "^3.8.4"
+    "nodemon": "^3.1.10"
   }
 }

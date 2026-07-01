@@ -24,32 +24,37 @@ function LoginPage() {
     };
 
     const handleLogin = async () => {
-  if (!formData.email || !formData.password) {
-    setError("Please fill all fields.");
-    return;
-  }
+        if (!formData.email || !formData.password) {
+            setError("Please fill all fields.");
+            return;
+        }
 
-  try {
-    setLoading(true);
-    setError("");
+        try {
+            setLoading(true);
+            setError("");
 
-    const response = await loginUser(formData);
+            const response = await loginUser(formData);
 
-localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("accessToken", response.accessToken);
 
-setUser(response.user);
+            setUser(response.user);
 
-navigate("/");
-  } catch (error) {
-    setError(
-      error.response?.data?.message ||
-      error.message ||
-      "Login failed."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+            navigate("/");
+        } catch (error) {
+            if (error.response?.status === 401) {
+                setError("Incorrect email or password.");
+            } else if (error.response?.status === 404) {
+                setError("No account found with this email.");
+            } else {
+                setError(
+                    error.response?.data?.message ||
+                    "Something went wrong. Please try again."
+                );
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
