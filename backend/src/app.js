@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "RC-SCRATCH API is running"
+    message: "Relocation Companion API is running"
   });
 });
 
